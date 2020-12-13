@@ -59,6 +59,16 @@ void Console::WriteErr(const std::string& str)
 	SetAttribute(CONSTYLE_DEFAULT);
 }
 
+void Console::FWriteErr(const char* format, ...)
+{
+	SetAttribute(CONSTYLE_ERROR);
+	va_list args;
+	va_start(args, format);
+	vprintf(format, args);
+	va_end(args);
+	SetAttribute(CONSTYLE_DEFAULT);
+}
+
 void Console::SetAttribute(WORD attribute)
 {
 	SetConsoleTextAttribute(hstdout, attribute);
