@@ -57,3 +57,13 @@ intptr_t ScanInternalModule(char* pattern, char* mask, char* moduleName)
     char* begin = (char*)modinfo.lpBaseOfDll;
     return ScanInternal(pattern, mask, begin, size);
 }
+
+void NopCodeRange(void* address, size_t range)
+{
+    DWORD oldProtect;
+    if (VirtualProtect(address, range, PAGE_EXECUTE_READWRITE, &oldProtect)) {
+        memset(address, 0x90, range);
+        VirtualProtect(address, range, oldProtect, &oldProtect);
+    }
+}
+

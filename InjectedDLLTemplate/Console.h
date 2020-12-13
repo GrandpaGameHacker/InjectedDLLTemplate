@@ -18,6 +18,8 @@ public:
 
 	void Init();
 	void Free();
+	void SetTitle(const std::string& str);
+	void ClearScreen();
 	void Write(const std::string& str);
 	void FWrite(const char* format, ...);
 	void WriteErr(const std::string& str);

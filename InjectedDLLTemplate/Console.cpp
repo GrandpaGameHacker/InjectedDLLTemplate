@@ -39,6 +39,40 @@ void Console::Free()
 	FreeConsole();
 }
 
+void Console::SetTitle(const std::string& str)
+{
+	SetConsoleTitle(str.c_str());
+}
+
+void Console::Cls()
+{
+	SMALL_RECT scrollRect;
+	COORD scrollTarget;
+	CHAR_INFO fill;
+	if (!GetConsoleScreenBufferInfo(hstdout, &csbi))
+	{
+		return;
+	}
+
+	scrollRect.Left = 0;
+	scrollRect.Top = 0;
+	scrollRect.Right = csbi.dwSize.X;
+	scrollRect.Bottom = csbi.dwSize.Y;
+
+	scrollTarget.X = 0;
+	scrollTarget.Y = (SHORT)(0 - csbi.dwSize.Y);
+
+	fill.Char.UnicodeChar = TEXT(' ');
+	fill.Attributes = csbi.wAttributes;
+
+	ScrollConsoleScreenBuffer(hstdout, &scrollRect, NULL, scrollTarget, &fill);
+
+	csbi.dwCursorPosition.X = 0;
+	csbi.dwCursorPosition.Y = 0;
+
+	SetConsoleCursorPosition(hstdout, csbi.dwCursorPosition);
+}
+
 void Console::Write(const std::string& str)
 {
 	std::cout << str << std::endl;
