@@ -21,6 +21,7 @@ public:
 	void Write(const std::string& str);
 	void FWrite(const char* format, ...);
 	void WriteErr(const std::string& str);
+	void FWriteErr(const char* format, ...);
 	void SetAttribute(WORD attribute);
 };
 
