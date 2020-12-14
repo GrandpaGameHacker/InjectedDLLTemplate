@@ -1,5 +1,18 @@
 #include "dllmain.h"
 
+Console consoleInit()
+{
+    if (!g_bConsoleInit) {
+        g_bConsoleInit = true;
+        return Console(CONSOLE_TITLE);
+    }
+}
+
+bool g_bConsoleInit = false;
+Console g_console = consoleInit();
+
+
+
 BOOL APIENTRY DllMain( HMODULE hModule,
                        DWORD  ul_reason_for_call,
                        LPVOID lpReserved
@@ -19,10 +32,10 @@ BOOL APIENTRY DllMain( HMODULE hModule,
 
 void DllThread()
 {
-    Console con;
-    // Insert Your Code Here
-    
+    g_console.WriteBold("[+] Dll Injected !");
+
     // Make sure to close all threads/all are done before calling DllUnload
+    Sleep(1000);
     DllUnload();
 }
 
