@@ -80,9 +80,9 @@ Patch::~Patch()
 {
     if (m_bPatchEnabled) {
         Restore();
-        free(m_Bytes);
-        free(m_OldBytes);
     }
+    free(m_Bytes);
+    free(m_OldBytes);
 }
 
 void Patch::Apply()
