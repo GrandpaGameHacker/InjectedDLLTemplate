@@ -3,23 +3,23 @@
 
 
 Console::Console() :
-	fpin(nullptr),
-	fpout(nullptr),
-	fperr(nullptr),
-	hstdin(NULL),
-	hstdout(NULL),
-	csbi()
+	m_fpIn(nullptr),
+	m_fpOut(nullptr),
+	m_fpErr(nullptr),
+	m_hStdin(NULL),
+	m_hStdout(NULL),
+	m_csbi()
 {
 	Init();
 }
 
 Console::Console(const std::string& title) :
-	fpin(nullptr),
-	fpout(nullptr),
-	fperr(nullptr),
-	hstdin(NULL),
-	hstdout(NULL),
-	csbi()
+	m_fpIn(nullptr),
+	m_fpOut(nullptr),
+	m_fpErr(nullptr),
+	m_hStdin(NULL),
+	m_hStdout(NULL),
+	m_csbi()
 {
 	Init();
 	SetTitle(title);
@@ -34,23 +34,23 @@ void Console::Init()
 {
 	AllocConsole();
 	AttachConsole(GetCurrentProcessId());
-	freopen_s(&fpin, "CONIN$", "r", stdin);
-	freopen_s(&fpout, "CONOUT$", "w", stdout);
-	freopen_s(&fperr, "CONOUT$", "w", stderr);
+	freopen_s(&m_fpIn, "CONIN$", "r", stdin);
+	freopen_s(&m_fpOut, "CONOUT$", "w", stdout);
+	freopen_s(&m_fpErr, "CONOUT$", "w", stderr);
 
-	hstdin = GetStdHandle(STD_INPUT_HANDLE);
-	hstdout = GetStdHandle(STD_OUTPUT_HANDLE);
-	GetConsoleScreenBufferInfo(hstdout, &csbi);
+	m_hStdin = GetStdHandle(STD_INPUT_HANDLE);
+	m_hStdout = GetStdHandle(STD_OUTPUT_HANDLE);
+	GetConsoleScreenBufferInfo(m_hStdout, &m_csbi);
 	SetAttribute(CONSTYLE_DEFAULT);
 }
 
 void Console::Free()
 {
-	fclose(fpin);
-	fclose(fpout);
-	fclose(fperr);
-	CloseHandle(hstdin);
-	CloseHandle(hstdout);
+	fclose(m_fpIn);
+	fclose(m_fpOut);
+	fclose(m_fpErr);
+	CloseHandle(m_hStdin);
+	CloseHandle(m_hStdout);
 	FreeConsole();
 }
 
@@ -79,7 +79,7 @@ void Console::SetCtrlHandler(PHANDLER_ROUTINE HandlerRoutine, BOOL Add)
 
 void Console::SetAttribute(WORD attribute)
 {
-	SetConsoleTextAttribute(hstdout, attribute);
+	SetConsoleTextAttribute(m_hStdout, attribute);
 }
 
 void Console::ClearScreen()
@@ -87,28 +87,28 @@ void Console::ClearScreen()
 	SMALL_RECT scrollRect;
 	COORD scrollTarget;
 	CHAR_INFO fill;
-	if (!GetConsoleScreenBufferInfo(hstdout, &csbi))
+	if (!GetConsoleScreenBufferInfo(m_hStdout, &m_csbi))
 	{
 		return;
 	}
 
 	scrollRect.Left = 0;
 	scrollRect.Top = 0;
-	scrollRect.Right = csbi.dwSize.X;
-	scrollRect.Bottom = csbi.dwSize.Y;
+	scrollRect.Right = m_csbi.dwSize.X;
+	scrollRect.Bottom = m_csbi.dwSize.Y;
 
 	scrollTarget.X = 0;
-	scrollTarget.Y = (SHORT)(0 - csbi.dwSize.Y);
+	scrollTarget.Y = (SHORT)(0 - m_csbi.dwSize.Y);
 
 	fill.Char.UnicodeChar = TEXT(' ');
-	fill.Attributes = csbi.wAttributes;
+	fill.Attributes = m_csbi.wAttributes;
 
-	ScrollConsoleScreenBuffer(hstdout, &scrollRect, NULL, scrollTarget, &fill);
+	ScrollConsoleScreenBuffer(m_hStdout, &scrollRect, NULL, scrollTarget, &fill);
 
-	csbi.dwCursorPosition.X = 0;
-	csbi.dwCursorPosition.Y = 0;
+	m_csbi.dwCursorPosition.X = 0;
+	m_csbi.dwCursorPosition.Y = 0;
 
-	SetConsoleCursorPosition(hstdout, csbi.dwCursorPosition);
+	SetConsoleCursorPosition(m_hStdout, m_csbi.dwCursorPosition);
 }
 
 
@@ -132,7 +132,7 @@ void Console::WriteBold(const std::string& str)
 	SetAttribute(CONSTYLE_DEFAULT);
 }
 
-void Console::FWriteErr(const char* format, ...)
+void Console::FWriteBold(const char* format, ...)
 {
 	SetAttribute(CONSTYLE_BOLD);
 	va_list args;

@@ -32,10 +32,10 @@ BOOL APIENTRY DllMain( HMODULE hModule,
 
 void DllThread()
 {
-    g_console.WriteBold("[+] Dll Injected !");
+    g_console.Write("[+] Dll Injected");
 
     // Make sure to close all threads/all are done before calling DllUnload
-    Sleep(1000);
+    Sleep(6000);
     DllUnload();
 }
 

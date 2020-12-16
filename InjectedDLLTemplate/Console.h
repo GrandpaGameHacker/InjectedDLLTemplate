@@ -9,9 +9,9 @@
 
 class Console
 {
-	FILE* fpin, *fpout, *fperr;
-	HANDLE hstdin, hstdout;
-	CONSOLE_SCREEN_BUFFER_INFO csbi;
+	FILE* m_fpIn, *m_fpOut, *m_fpErr;
+	HANDLE m_hStdin, m_hStdout;
+	CONSOLE_SCREEN_BUFFER_INFO m_csbi;
 public:
 	Console();
 	Console(const std::string& title);
@@ -29,7 +29,7 @@ public:
 	void Write(const std::string& str);
 	void FWrite(const char* format, ...);
 	void WriteBold(const std::string& str);
-	void FWriteErr(const char* format, ...);
+	void FWriteBold(const char* format, ...);
 
 };
 

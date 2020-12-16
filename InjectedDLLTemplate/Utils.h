@@ -1,17 +1,28 @@
 #pragma once
 #include "stdheaders.h"
-
-//const BYTE farJumpInstruction[] = { 0xff, 0x25, 0,0,0,0 };
-//const BYTE jumpInstruction = { 0xEB };
-/*TODO
-* Add Hooking
-* 
-*/
 void GetModuleInfo(char* ModuleName, MODULEINFO* ModuleInfo);
 
-// Thanks Guided Hacking [Rake] :)
+// Thanks Rake from Guided Hacking :)
 // https://guidedhacking.com/threads/external-internal-pattern-scanning-guide.14112/
-intptr_t ScanBasic(char* pattern, char* mask, char* begin, intptr_t size);
-intptr_t ScanInternal(char* pattern, char* mask, char* begin, intptr_t size);
-intptr_t ScanInternalModule(char* pattern, char* mask, char* moduleName);
+uintptr_t ScanBasic(char* pattern, char* mask, char* begin, size_t size);
+uintptr_t ScanInternal(char* pattern, char* mask, char* begin, size_t size);
+uintptr_t ScanInternalModule(char* pattern, char* mask, char* moduleName);
+
 void NopCodeRange(void* address, size_t range);
+
+// Basic Patching Class
+class Patch {
+    uintptr_t m_Address;
+    BYTE* m_Bytes;
+    BYTE* m_OldBytes;
+    size_t m_Size;
+    bool m_bPatchEnabled;
+    
+public:
+    explicit Patch(uintptr_t address, BYTE* bytes, size_t size);
+    ~Patch();
+    void Apply();
+    void Restore();
+    
+
+};
