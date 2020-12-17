@@ -32,7 +32,7 @@ BOOL APIENTRY DllMain( HMODULE hModule,
 
 void DllThread()
 {
-    g_console.Write("[+] Dll Injected");
+    Main(); // <----- place your code in main
 
     /* BEFORE Calling DllUnload Make Sure That:
      - All Threads are done
@@ -40,6 +40,15 @@ void DllThread()
      - Any other resources are freed;
     */
     DllUnload();
+}
+
+// This template includes several simple utility functions
+// open utils.h for a reference.
+
+void Main()
+{
+    g_console.Write("[+] DLL Injected"); // g_console is the global console window for the dll
+    //Your code here;
 }
 
 void DllUnload()

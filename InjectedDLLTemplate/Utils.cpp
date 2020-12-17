@@ -111,7 +111,7 @@ void Patch::Restore()
     }
 };
 
-Hook::Hook(uintptr_t address, uintptr_t target, int BytesNeeded) :
+Hook::Hook(uintptr_t address, uintptr_t target, size_t BytesNeeded) :
     m_Address(address), m_Target(target), m_Bytes(nullptr), m_OldBytes(nullptr), m_Size(BytesNeeded), m_bEnabled(false)
 {
 
@@ -130,7 +130,7 @@ Hook::Hook(uintptr_t address, uintptr_t target, int BytesNeeded) :
     *jmpAbsolute = m_Target;
 
     void* nops = (void*)((uintptr_t)m_Bytes + 14);
-    int numberOfNops = m_Size - 14;
+    size_t numberOfNops = m_Size - 14;
     NopCodeRange(nops, numberOfNops);
 
     // Copying original bytes to the internal buffer

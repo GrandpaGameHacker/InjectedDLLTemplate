@@ -35,7 +35,7 @@ class Hook {
     size_t m_Size;
     bool m_bEnabled;
 public:
-    explicit Hook(uintptr_t address, uintptr_t target, int BytesNeeded);
+    explicit Hook(uintptr_t address, uintptr_t target, size_t BytesNeeded);
     ~Hook();
     void Enable();
     void Disable();

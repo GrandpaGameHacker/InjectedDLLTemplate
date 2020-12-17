@@ -11,4 +11,7 @@ extern bool g_bConsoleInit;
 Console consoleInit();
 
 void DllThread();
+
+void Main();
+
 void DllUnload();
