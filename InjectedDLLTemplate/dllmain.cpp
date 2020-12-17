@@ -34,8 +34,11 @@ void DllThread()
 {
     g_console.Write("[+] Dll Injected");
 
-    // Make sure to close all threads/all are done before calling DllUnload
-    Sleep(6000);
+    /* BEFORE Calling DllUnload Make Sure That:
+     - All Threads are done
+     - All hooks referencing this dll are unhooked
+     - Any other resources are freed;
+    */
     DllUnload();
 }
 

@@ -16,13 +16,27 @@ class Patch {
     BYTE* m_Bytes;
     BYTE* m_OldBytes;
     size_t m_Size;
-    bool m_bPatchEnabled;
+    bool m_bEnabled;
     
 public:
     explicit Patch(uintptr_t address, BYTE* bytes, size_t size);
     ~Patch();
     void Apply();
     void Restore();
-    
+};
 
+
+// Basic Hooking Class
+class Hook {
+    uintptr_t m_Address;
+    uintptr_t m_Target;
+    BYTE* m_Bytes;
+    BYTE* m_OldBytes;
+    size_t m_Size;
+    bool m_bEnabled;
+public:
+    explicit Hook(uintptr_t address, uintptr_t target, int BytesNeeded);
+    ~Hook();
+    void Enable();
+    void Disable();
 };
